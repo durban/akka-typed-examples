@@ -14,4 +14,9 @@ package object actors {
     def untyped: ExtendedActorSystem =
       sys.getClass.getMethod("untyped").invoke(sys).asInstanceOf[ExtendedActorSystem]
   }
+
+  implicit class ActorContextOps(ctx: ActorContext[_]) {
+    def untyped: akka.actor.ActorContext =
+      ctx.getClass.getField("akka$typed$ActorContextAdapter$$ctx").get(ctx).asInstanceOf[akka.actor.ActorContext]
+  }
 }
