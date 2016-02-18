@@ -12,12 +12,65 @@ import akka.actor.Address
 import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigValueFactory
 import akka.actor.AddressFromURIString
+import com.example.sc.ScodecSerializer
+import akka.serialization.JavaSerializer
+import scala.util.Try
+import scala.util.Success
+import scala.util.Failure
 
 object TypedRemote {
 
-  sealed trait Message
-  case object Start extends Message
-  final case class Boo(replyTo: ActorRef[Message]) extends Message
+  object Protocol {
+
+    import scodec._
+    import scodec.bits._
+    import scodec.codecs._
+    import scodec.codecs.implicits._
+
+    sealed trait Message extends Product with Serializable
+    case object Start extends Message
+    final case class Boo(replyTo: ActorRef[Message]) extends Message
+
+    implicit private[this] def arefCodec[A](implicit sys: akka.actor.ExtendedActorSystem): Codec[ActorRef[A]] = {
+      // TODO: this is ugly
+      val js = new JavaSerializer(sys)
+      val lengthCodec = int64L
+      Codec(
+        (ref: ActorRef[A]) => {
+          val u: akka.actor.ActorRef = ref.untyped
+          val bytes = ByteVector(js.toBinary(u))
+          for {
+            size <- lengthCodec.encode(bytes.length)
+          } yield size ++ bytes.toBitVector
+        },
+        (bits: BitVector) => {
+          for {
+            res <- lengthCodec.decode(bits)
+            length = res.value
+            (refBits, rest) = res.remainder.splitAt(length * 8)
+            ref <- Try(js.fromBinary(refBits.toByteArray, None)) match {
+              case Success(r) => r match {
+                case untypedRef: akka.actor.ActorRef =>
+                  Attempt.successful(ActorRef[A](untypedRef))
+                case x =>
+                  Attempt.failure(Err(s"Expected an ActorRef, got a(n) ${x.getClass.getName}"))
+              }
+              case Failure(ex) =>
+                Attempt.failure(Err(ex.getMessage))
+            }
+          } yield DecodeResult(ref, rest)
+        }
+      )
+    }
+
+    private[this] def msgCodec(implicit sys: akka.actor.ExtendedActorSystem): Codec[Message] =
+      Codec.coproduct[Message].discriminatedByIndex(uint8)
+
+    final class MessageSerializer(sys: akka.actor.ExtendedActorSystem)
+      extends ScodecSerializer.ScSerializer[Message](msgCodec(sys))
+  }
+
+  import Protocol._
 
   lazy val guardian: Behavior[Message] = ContextAware { ctx =>
     Total {

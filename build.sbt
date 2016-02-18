@@ -10,6 +10,7 @@ scalacOptions ++= Seq(
   "-encoding", "UTF-8",
   "-Xlint:_",
   "-Xfuture",
+  //"-Xlog-implicits",
   "-Yno-adapted-args",
   "-Ywarn-numeric-widen",
   "-Ywarn-dead-code",
@@ -27,6 +28,9 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-typed-experimental" % akkaVersion,
   "com.typesafe.akka" %% "akka-http-core" % akkaVersion,
   "com.typesafe.akka" %% "akka-http-experimental" % akkaVersion,
+
+  "org.scodec" %% "scodec-bits" % "1.1.0",
+  "org.scodec" %% "scodec-core" % "1.9.0",
 
   "org.scalatest" %% "scalatest" % "2.2.5" % "test",
   "org.scalacheck" %% "scalacheck" % "1.12.5" % "test",

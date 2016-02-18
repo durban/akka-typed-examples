@@ -7,7 +7,7 @@ package object actors {
 
   implicit class ActorRefOps(ref: ActorRef[_]) {
     def untyped: akka.actor.ActorRef =
-      ref.getClass.getMethod("untyped").invoke(ref).asInstanceOf[akka.actor.ActorRef]
+      ref.getClass.getMethod("untypedRef").invoke(ref).asInstanceOf[akka.actor.ActorRef]
   }
 
   implicit class ActorSystemOps(sys: ActorSystem[_]) {
