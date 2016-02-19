@@ -17,7 +17,7 @@ scalacOptions ++= Seq(
   "-Ywarn-unused-import"
 )
 
-val akkaVersion = "2.4.2-RC2"
+val akkaVersion = "2.4.2"
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
