@@ -1,7 +1,7 @@
 
 updateOptions := updateOptions.value.withCachedResolution(true)
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
 scalacOptions ++= Seq(
   "-feature",
@@ -29,6 +29,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-http-core" % akkaVersion,
   "com.typesafe.akka" %% "akka-http-experimental" % akkaVersion,
 
+  "com.chuusai" %% "shapeless" % "2.3.0",
   "org.scodec" %% "scodec-bits" % "1.1.0",
   "org.scodec" %% "scodec-core" % "1.9.0",
 
