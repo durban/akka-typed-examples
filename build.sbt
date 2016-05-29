@@ -17,7 +17,7 @@ scalacOptions ++= Seq(
   "-Ywarn-unused-import"
 )
 
-val akkaVersion = "2.4.2"
+val akkaVersion = "2.4.6"
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
@@ -29,7 +29,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-http-core" % akkaVersion,
   "com.typesafe.akka" %% "akka-http-experimental" % akkaVersion,
 
-  "com.chuusai" %% "shapeless" % "2.3.0",
+  "com.chuusai" %% "shapeless" % "2.3.1",
   "org.scodec" %% "scodec-bits" % "1.1.0",
   "org.scodec" %% "scodec-core" % "1.9.0",
 

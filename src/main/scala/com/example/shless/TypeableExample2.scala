@@ -25,19 +25,21 @@ object TypeableExample2 {
     def y: A = implicitly[Default[A]].default
   }
 
-  val tt = Typeable[C[Int]]
+  // Fixed in shapeless 2.3.1:
 
-  val v1: Any = C[Int]("a")
-  val v2: Any = C[Double]("b")
-
-  def main(args: Array[String]): Unit = {
-    tt.cast(v1).foreach { c: C[Int] =>
-      val i: Int = c.y
-      println(i)
-    }
-    tt.cast(v2).foreach { c: C[Int] =>
-      val i: Int = c.y
-      println(i)
-    }
-  }
+//  val tt = Typeable[C[Int]]
+//
+//  val v1: Any = C[Int]("a")
+//  val v2: Any = C[Double]("b")
+//
+//  def main(args: Array[String]): Unit = {
+//    tt.cast(v1).foreach { c: C[Int] =>
+//      val i: Int = c.y
+//      println(i)
+//    }
+//    tt.cast(v2).foreach { c: C[Int] =>
+//      val i: Int = c.y
+//      println(i)
+//    }
+//  }
 }
