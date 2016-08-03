@@ -37,3 +37,7 @@ libraryDependencies ++= Seq(
   "org.scalacheck" %% "scalacheck" % "1.12.5" % "test",
   "junit" % "junit" % "4.12" % "test"
 )
+
+wartremoverWarnings ++= Seq(
+  Wart.ImplicitConversion
+)
