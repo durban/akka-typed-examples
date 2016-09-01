@@ -17,6 +17,7 @@ project/plugins/project/
 .worksheet
 /bin/
 .cache-main
+.cache-tests
 .classpath
 .project
 .settings/
