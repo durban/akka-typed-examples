@@ -18,6 +18,7 @@ scalacOptions ++= Seq(
 )
 
 val akkaVersion = "2.4.6"
+val fs2Version = "0.9.1"
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
@@ -32,6 +33,10 @@ libraryDependencies ++= Seq(
   "com.chuusai" %% "shapeless" % "2.3.2",
   "org.scodec" %% "scodec-bits" % "1.1.0",
   "org.scodec" %% "scodec-core" % "1.9.0",
+
+  "co.fs2" %% "fs2-core" % fs2Version,
+  "co.fs2" %% "fs2-io" % fs2Version,
+  "co.fs2" %% "fs2-cats" % "0.1.0",
 
   "org.scalatest" %% "scalatest" % "2.2.5" % "test",
   "org.scalacheck" %% "scalacheck" % "1.12.5" % "test",
