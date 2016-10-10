@@ -2,6 +2,7 @@ package com.example.actors
 
 import akka.typed._
 import akka.typed.ScalaDSL._
+import akka.typed.adapter._
 import akka.cluster.Cluster
 import akka.cluster.ClusterEvent.MemberUp
 import scala.concurrent.Await
@@ -51,7 +52,7 @@ object TypedRemote {
             ref <- Try(js.fromBinary(refBits.toByteArray, None)) match {
               case Success(r) => r match {
                 case untypedRef: akka.actor.ActorRef =>
-                  Attempt.successful(ActorRef[A](untypedRef))
+                  Attempt.successful(???) // TODO: how to create typed ActorRef?
                 case x =>
                   Attempt.failure(Err(s"Expected an ActorRef, got a(n) ${x.getClass.getName}"))
               }
@@ -75,7 +76,7 @@ object TypedRemote {
   lazy val guardian: Behavior[Message] = ContextAware { ctx =>
     Total {
       case Start =>
-        val ch = ctx.spawn(Props(child), "Child")
+        val ch = ctx.spawn(child, "Child")
         ch ! Boo(ctx.self)
         Same
       case Boo(_) =>
@@ -97,7 +98,7 @@ object TypedRemote {
   def main(args: Array[String]): Unit = {
     val sys = ActorSystem(
       "MySystem",
-      Props(guardian),
+      guardian,
       config = Some(ConfigFactory.parseResources(getClass, "/local.conf")))
     Thread.sleep(1000)
     sys ! Start
@@ -113,7 +114,7 @@ object RemoteSystem {
   def main(args: Array[String]): Unit = {
     val sys = ActorSystem[Nothing](
       "MyRemote",
-      Props[Nothing](dummy),
+      dummy,
       config = Some(ConfigFactory.parseResources(getClass, "/remote.conf")))
     Thread.sleep(10000)
     Await.ready(sys.terminate(), 1.second)

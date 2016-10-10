@@ -21,7 +21,7 @@ object TypedCluster {
   }
 
   def main(args: Array[String]): Unit = {
-    val sys = ActorSystem("MySystem", Props(guardian))
+    val sys = ActorSystem("MySystem", guardian)
     Thread.sleep(2000)
     Await.ready(sys.terminate(), 1.second)
   }

@@ -56,7 +56,7 @@ object TypedHttp {
   }
 
   def main(args: Array[String]): Unit = {
-    val sys = ActorSystem[Message]("MySystem", Props(guardian))
+    val sys = ActorSystem[Message]("MySystem", guardian)
     Thread.sleep(5000)
     sys ! Error
   }

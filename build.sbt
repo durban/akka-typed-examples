@@ -17,7 +17,7 @@ scalacOptions ++= Seq(
   "-Ywarn-unused-import"
 )
 
-val akkaVersion = "2.4.6"
+val akkaVersion = "2.4.11"
 val fs2Version = "0.9.1"
 
 libraryDependencies ++= Seq(
